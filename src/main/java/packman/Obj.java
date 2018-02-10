@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package puckman;
+package packman;
 
 /**
  *
@@ -13,6 +13,6 @@ public interface Obj {
     int getY();
     void setX(int x);
     void setY(int y);
-    String getName();
-    String getIm();
+    GameObject getName();
+    String getView();
 }
