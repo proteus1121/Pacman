@@ -2,19 +2,20 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package packman;
-
-import java.util.Collections;
-import java.util.List;
+package puckman;
 
 /**
  *
  * @author Артем
  */
-public class Packman
-{
+public class Puckman {
+
+    /**
+     * @param args the command line arguments
+     */
     public static void main(String[] args) {
-      Display a = new Display();
+       Display a = new Display();
+       
     }
 }
 
