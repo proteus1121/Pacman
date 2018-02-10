@@ -13,6 +13,6 @@ public interface Obj {
     int getY();
     void setX(int x);
     void setY(int y);
-    String getName();
-    String getIm();
+    GameObject getName();
+    String getView();
 }
