@@ -3,6 +3,7 @@ package packman;
 import lombok.Getter;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 
 public class Map
@@ -16,6 +17,8 @@ public class Map
 
   public void readMap(File mapFile, JPanel dip)
   {
+    dip.setLayout(new GridLayout(20, 20));
+
     String map = "====================" + "=******************=" + "=***==***=***==****=" + "=***==*=====*==****=" + "=******************="
         + "=**=*****=******=**=" + "=**=***=====****=**=" + "=*==*=*******=**==*=" + "=****=*******=*****=" + "===**=*******=***==="
         + "=******************=" + "===**=***=***=***===" + "=****==**=**==*****=" + "=****=***=***=*****=" + "=****=*=====*=*****="

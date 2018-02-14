@@ -4,6 +4,8 @@
  */
 package packman;
 
+import java.util.List;
+
 /**
  *
  * @author Артем
@@ -15,4 +17,5 @@ public interface Obj {
     void setY(int y);
     GameObject getName();
     String getView();
+    void generateNextStep(Map map, List<Obj> mapObjects);
 }

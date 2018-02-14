@@ -25,6 +25,7 @@ public class Hero implements Obj
   private int x;
   private int y;
   boolean openCloseView = false;
+  Direction nextStepDirection = Direction.HOLD;
 
   Hero(int x, int y)
   {
@@ -37,7 +38,7 @@ public class Hero implements Obj
     String view = openCloseView ? view1 : view2;
     openCloseView = !openCloseView;
     return view;
-    }
+  }
 
   protected void setControl(JFrame frame)
   {
@@ -48,35 +49,21 @@ public class Hero implements Obj
         switch (KeyEvent.getKeyText(e.getKeyCode()))
         {
           case "D":
-            if (blocks[hero.getX()][hero.getY() + 1].passable)
-            {
-              blocks[hero.getX()][hero.getY()].setText("");
-              hero.setY(hero.getY() + 1);
-            }
+            nextStepDirection = Direction.RIGHT;
             break;
           case "A":
-            if (blocks[hero.getX()][hero.getY() - 1].passable)
-            {
-              blocks[hero.getX()][hero.getY()].setText("");
-              hero.setY(hero.getY() - 1);
-            }
+            nextStepDirection = Direction.LEFT;
             break;
           case "S":
-            if (blocks[hero.getX() - 1][hero.getY()].passable)
-            {
-              blocks[hero.getX()][hero.getY()].setText("");
-              hero.setX(hero.getX() - 1);
-            }
+            nextStepDirection = Direction.DOWN;
             break;
           case "W":
-            if (blocks[hero.getX() + 1][hero.getY()].passable)
-            {
-              blocks[hero.getX()][hero.getY()].setText("");
-              hero.setX(hero.getX() + 1);
-            }
+            nextStepDirection = Direction.UP;
+            break;
+          default:
+            nextStepDirection = Direction.HOLD;
             break;
         }
-//        repaintw(mapObjects);
       }
     });
   }
