@@ -59,9 +59,12 @@ public class Enemy implements Obj
   {
     List<Pair<Integer, Integer>> freeWays = lookForFreeSpace(map, mapObjects);
     Random random = new Random();
-    int d = random.nextInt(freeWays.size());
-    Pair<Integer, Integer> wayToMove = freeWays.get(d);
-    setX(x + wayToMove.getKey());
-    setY(y + wayToMove.getValue());
+    if (!freeWays.isEmpty())
+    {
+      int d = random.nextInt(freeWays.size());
+      Pair<Integer, Integer> wayToMove = freeWays.get(d);
+      setX(x + wayToMove.getKey());
+      setY(y + wayToMove.getValue());
+    }
   }
 }

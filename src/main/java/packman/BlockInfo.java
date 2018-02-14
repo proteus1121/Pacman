@@ -20,6 +20,6 @@ public enum BlockInfo
   }
   public boolean isBusy(Block block, List<Obj> mapObjects){
     Optional<Obj> objOnBlock = mapObjects.stream().filter(obj -> obj.getX() == block.getX() && obj.getY() == block.getY()).findFirst();
-    return !isWall(block.getStatus()) && !objOnBlock.isPresent();
+    return isWall(block.getStatus()) || objOnBlock.isPresent();
   }
 }

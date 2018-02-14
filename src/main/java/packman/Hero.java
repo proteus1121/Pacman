@@ -47,11 +47,11 @@ public class Hero implements Obj
   public void generateNextStep(Map map, List<Obj> mapObjects)
   {
     List<Pair<Integer, Integer>> freeWays = lookForFreeSpace(map, mapObjects);
-    Random random = new Random();
-    int d = random.nextInt(freeWays.size());
-    Pair<Integer, Integer> wayToMove = freeWays.get(d);
-    setX(x + wayToMove.getKey());
-    setY(y + wayToMove.getValue());
+    if (freeWays.contains(nextStepDirection.getPoint()))
+    {
+      setX(x + nextStepDirection.getPoint().getKey());
+      setY(y + nextStepDirection.getPoint().getValue());
+    }
   }
 
   protected void setControl(JFrame frame)

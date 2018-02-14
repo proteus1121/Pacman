@@ -7,6 +7,7 @@ package packman;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
  */
 public interface Obj
 {
-  List<Pair<Integer, Integer>> POSSIBLE_WAYS = new ArrayList<Pair<Integer, Integer>>()
+  List<Pair<Integer, Integer>> POSSIBLE_WAYS = Collections.unmodifiableList(new ArrayList<Pair<Integer, Integer>>()
   {{
     add(new Pair(-1, 1));
     add(new Pair(0, 1));
@@ -29,7 +30,7 @@ public interface Obj
     add(new Pair(-1, -1));
     add(new Pair(0, -1));
     add(new Pair(1, -1));
-  }};
+  }});
 
   int getX();
 
