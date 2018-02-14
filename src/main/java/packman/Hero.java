@@ -4,11 +4,14 @@
  */
 package packman;
 
+import javafx.util.Pair;
 import lombok.Data;
 
 import javax.swing.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.List;
+import java.util.Random;
 
 import static com.sun.java.accessibility.util.AWTEventMonitor.addKeyListener;
 
@@ -38,6 +41,17 @@ public class Hero implements Obj
     String view = openCloseView ? view1 : view2;
     openCloseView = !openCloseView;
     return view;
+  }
+
+  @Override
+  public void generateNextStep(Map map, List<Obj> mapObjects)
+  {
+    List<Pair<Integer, Integer>> freeWays = lookForFreeSpace(map, mapObjects);
+    Random random = new Random();
+    int d = random.nextInt(freeWays.size());
+    Pair<Integer, Integer> wayToMove = freeWays.get(d);
+    setX(x + wayToMove.getKey());
+    setY(y + wayToMove.getValue());
   }
 
   protected void setControl(JFrame frame)

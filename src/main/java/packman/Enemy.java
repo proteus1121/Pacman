@@ -19,21 +19,6 @@ public class Enemy implements Obj
   private int x;
   private int y;
 
-  private static final List<Pair<Integer, Integer>> POSSIBLE_WAYS = new ArrayList<Pair<Integer, Integer>>()
-  {{
-    add(new Pair(-1, 1));
-    add(new Pair(0, 1));
-    add(new Pair(1, 1));
-
-    add(new Pair(-1, 0));
-    add(new Pair(0, 0));
-    add(new Pair(1, 0));
-
-    add(new Pair(-1, -1));
-    add(new Pair(0, -1));
-    add(new Pair(1, -1));
-  }};
-
   Enemy(int x, int y)
   {
     this.x = x;
@@ -78,13 +63,5 @@ public class Enemy implements Obj
     Pair<Integer, Integer> wayToMove = freeWays.get(d);
     setX(x + wayToMove.getKey());
     setY(y + wayToMove.getValue());
-  }
-
-  private List<Pair<Integer, Integer>> lookForFreeSpace(Map map, List<Obj> mapObjects)
-  {
-    return POSSIBLE_WAYS.stream().filter(way -> {
-      Block nextBlock = map.getBlocks()[x + way.getKey()][y + way.getKey()];
-      return !nextBlock.getStatus().isBusy(nextBlock, mapObjects);
-    }).collect(Collectors.toList());
   }
 }

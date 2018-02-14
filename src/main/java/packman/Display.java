@@ -98,20 +98,21 @@ class Display
   public void repaint(List<Obj> objects)
   {
     int a = 0;
+    Block[][] mapBlocks = map.getBlocks();
     for (int y = 0; y < 20; y++)
     {
       for (int i = 0; i < 20; i++)
       {
-        if (blocks[i][y].proh == false && blocks[i][y].passable == true)
+        if (mapBlocks[i][y].getStatus() == BlockInfo.POINT)
         {
-          blocks[i][y].setText("*");
+          mapBlocks[i][y].getView().setText("*");
           a = 1;
-          blocks[i][y].setForeground(Color.white);
+          mapBlocks[i][y].getView().setForeground(Color.white);
+        }
 
-          if (blocks[i][y].proh == true)
-          {
-            blocks[i][y].setText("");
-          }
+        if (mapBlocks[i][y].getStatus() == BlockInfo.EMPTY)
+        {
+          mapBlocks[i][y].getView().setText("");
         }
       }
     }
@@ -120,64 +121,15 @@ class Display
       timer.stop();
       JOptionPane.showMessageDialog(frame, "Игра пройдена!");
     }
-    Obj hero = null;
     for (Iterator it = objects.iterator(); it.hasNext(); )
     {
       final Obj object = (Obj) it.next();
+      mapBlocks[object.getX()][object.getY()].getView().setText(object.getView());
+      mapBlocks[object.getX()][object.getY()].getView().setForeground(Color.white);
 
-      if (object.getName().equals("HERO"))
+      if (object.getName() == GameObject.HERO)
       {
-        hero = object;
-        Timer timer4 = new javax.swing.Timer(200, new ActionListener()
-        {
-          public void actionPerformed(ActionEvent e)
-          {
-
-            if (blocks[object.getX()][object.getY()].getText().equals("⊕"))
-            {
-              blocks[object.getX()][object.getY()].setText("⊗");
-            }
-            else
-            {
-              blocks[object.getX()][object.getY()].setText("⊕");
-            }
-          }
-        });
-        timer4.start();
-
-        blocks[object.getX()][object.getY()].setForeground(Color.yellow);
-        blocks[object.getX()][object.getY()].proh = true;
-
-      }
-      else
-      {
-        int x = 0;
-        int y = 0;
-
-        if (object.getX() == hero.getX() && object.getY() == hero.getY())
-        {
-          timer.stop();
-          JOptionPane.showMessageDialog(this, "Game over!");
-        }
-
-        if (blocks[object.getX() + x][object.getY() + y].passable == true)
-        {
-          blocks[object.getX()][object.getY()].setText("");
-          blocks[object.getX()][object.getY()].setForeground(Color.white);
-          blocks[object.getX() + x][object.getY() + y].setText("♕");
-          object.setX(object.getX() + x);
-          object.setY(object.getY() + y);
-
-        }
-        else
-        {
-          blocks[object.getX()][object.getY()].setText("");
-          blocks[object.getX()][object.getY()].setText("♕");
-          blocks[object.getX()][object.getY()].setForeground(Color.white);
-          object.setX(object.getX());
-          object.setY(object.getY());
-
-        }
+        mapBlocks[object.getX()][object.getY()].getView().setForeground(Color.yellow);
       }
     }
   }
