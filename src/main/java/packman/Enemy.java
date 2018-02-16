@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  */
 public class Enemy implements Obj
 {
-  private String im = "♕";
+  private String view = "♕";
   private int x;
   private int y;
 
@@ -37,7 +37,7 @@ public class Enemy implements Obj
 
   public String getView()
   {
-    return im;
+    return view;
   }
 
   public GameObject getName()

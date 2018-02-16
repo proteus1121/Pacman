@@ -4,17 +4,14 @@
  */
 package packman;
 
-import java.awt.Color;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
+import com.google.gson.Gson;
+
 import javax.swing.*;
+import java.awt.*;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -35,6 +32,12 @@ class Display
 
     JPanel dip = new JPanel();
 
+//    ClassLoader classLoader = getClass().getClassLoader();
+//    File mapFile = new File(Objects.requireNonNull(classLoader.getResource("map_1.json")).getFile());
+//    setMap(mapFile, dip);
+
+    Gson gson = new Gson();
+    gson.fieldNamingStrategy()
     setMap(dip);
 
     setMapObjects(mapObjects);
@@ -77,7 +80,7 @@ class Display
 
   private void setMap(JPanel dip)
   {
-    map.readMap(null, dip);
+    this.map.readMap(map, dip);
   }
 
   private void setMapObjects(List<Obj> mapObjects)
@@ -121,9 +124,8 @@ class Display
       timer.stop();
       JOptionPane.showMessageDialog(frame, "Игра пройдена!");
     }
-    for (Iterator it = objects.iterator(); it.hasNext(); )
+    for (final Obj object : objects)
     {
-      final Obj object = (Obj) it.next();
       mapBlocks[object.getX()][object.getY()].getView().setText(object.getView());
       mapBlocks[object.getX()][object.getY()].getView().setForeground(Color.white);
 

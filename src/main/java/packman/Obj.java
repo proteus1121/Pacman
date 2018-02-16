@@ -7,6 +7,7 @@ package packman;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,21 +18,6 @@ import java.util.stream.Collectors;
  */
 public interface Obj
 {
-  List<Pair<Integer, Integer>> POSSIBLE_WAYS = Collections.unmodifiableList(new ArrayList<Pair<Integer, Integer>>()
-  {{
-    add(new Pair(-1, 1));
-    add(new Pair(0, 1));
-    add(new Pair(1, 1));
-
-    add(new Pair(-1, 0));
-    add(new Pair(0, 0));
-    add(new Pair(1, 0));
-
-    add(new Pair(-1, -1));
-    add(new Pair(0, -1));
-    add(new Pair(1, -1));
-  }});
-
   int getX();
 
   int getY();
@@ -48,10 +34,10 @@ public interface Obj
 
   default List<Pair<Integer, Integer>> lookForFreeSpace(Map map, List<Obj> mapObjects)
   {
-    return POSSIBLE_WAYS.stream().filter(way ->
+    return Arrays.stream(Direction.values()).filter(way ->
     {
-      Block nextBlock = map.getBlocks()[getX() + way.getKey()][getY() + way.getKey()];
+      Block nextBlock = map.getBlocks()[getX() + way.getPoint().getKey()][getY() + way.getPoint().getKey()];
       return !nextBlock.getStatus().isBusy(nextBlock, mapObjects);
-    }).collect(Collectors.toList());
+    }).map(Direction::getPoint).collect(Collectors.toList());
   }
 }
