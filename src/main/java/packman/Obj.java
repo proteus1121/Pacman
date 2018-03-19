@@ -34,10 +34,11 @@ public interface Obj
 
   default List<Pair<Integer, Integer>> lookForFreeSpace(Map map, List<Obj> mapObjects)
   {
+    List<Obj> mapObjectsWithoutCurrentObj = mapObjects.stream().filter(obj -> !obj.equals(this)).collect(Collectors.toList());
     return Arrays.stream(Direction.values()).filter(way ->
     {
       Block nextBlock = map.getBlocks()[getX() + way.getPoint().getKey()][getY() + way.getPoint().getKey()];
-      return !nextBlock.getStatus().isBusy(nextBlock, mapObjects);
+      return !nextBlock.getStatus().isBusy(nextBlock, mapObjectsWithoutCurrentObj);
     }).map(Direction::getPoint).collect(Collectors.toList());
   }
 }

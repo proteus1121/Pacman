@@ -5,10 +5,16 @@
 package packman;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -32,15 +38,39 @@ class Display
 
     JPanel dip = new JPanel();
 
-//    ClassLoader classLoader = getClass().getClassLoader();
-//    File mapFile = new File(Objects.requireNonNull(classLoader.getResource("map_1.json")).getFile());
+    ClassLoader classLoader = getClass().getClassLoader();
+    File mapFile = new File(Objects.requireNonNull(classLoader.getResource("map_1.json")).getFile());
 //    setMap(mapFile, dip);
 
     Gson gson = new Gson();
-    gson.fieldNamingStrategy()
-    setMap(dip);
+    try
+    {
+      JsonElement map = new JsonParser().parse(new FileReader(mapFile.getPath()));
+      JsonObject jobject = map.getAsJsonObject();
 
-    setMapObjects(mapObjects);
+      JsonObject hero = jobject.getAsJsonObject("hero");
+      Hero heroObj = gson.fromJson(hero, Hero.class);
+      heroObj.setControl(frame);
+      mapObjects.add(heroObj);
+
+      JsonArray enemiesArray = jobject.getAsJsonArray("enemiesArray");
+      enemiesArray.forEach(enemy ->
+      {
+        Obj enemyObj = gson.fromJson(enemy.getAsJsonObject(), Enemy.class);
+        mapObjects.add(enemyObj);
+      });
+
+      JsonArray mapArray = jobject.getAsJsonArray("mapArray");
+      this.map.readMap(mapArray, dip);
+
+    }
+    catch (FileNotFoundException e)
+    {
+      e.printStackTrace();
+    }
+//    setMap(dip);
+
+//    setMapObjects(mapObjects);
 
     timer = new javax.swing.Timer(800, e ->
     {
@@ -78,25 +108,25 @@ class Display
 //        }
   }
 
-  private void setMap(JPanel dip)
-  {
-    this.map.readMap(map, dip);
-  }
+//  private void setMap(JPanel dip)
+//  {
+//    this.map.readMap(map, dip);
+//  }
 
-  private void setMapObjects(List<Obj> mapObjects)
-  {
-    Hero hero = new Hero(1, 1);
-    hero.setControl(frame);
-    mapObjects.add(hero);
-    Obj e1 = new Enemy(7, 9);
-    mapObjects.add(e1);
-    Obj e2 = new Enemy(9, 10);
-    mapObjects.add(e2);
-    Obj e3 = new Enemy(10, 10);
-    mapObjects.add(e3);
-    Obj e4 = new Enemy(9, 9);
-    mapObjects.add(e4);
-  }
+//  private void setMapObjects(List<Obj> mapObjects)
+//  {
+//    Hero hero = new Hero(1, 1);
+//    hero.setControl(frame);
+//    mapObjects.add(hero);
+//    Obj e1 = new Enemy(7, 9);
+//    mapObjects.add(e1);
+//    Obj e2 = new Enemy(9, 10);
+//    mapObjects.add(e2);
+//    Obj e3 = new Enemy(10, 10);
+//    mapObjects.add(e3);
+//    Obj e4 = new Enemy(9, 9);
+//    mapObjects.add(e4);
+//  }
 
   public void repaint(List<Obj> objects)
   {
@@ -126,12 +156,12 @@ class Display
     }
     for (final Obj object : objects)
     {
-      mapBlocks[object.getX()][object.getY()].getView().setText(object.getView());
-      mapBlocks[object.getX()][object.getY()].getView().setForeground(Color.white);
+      mapBlocks[object.getY()][object.getX()].getView().setText(object.getView());
+      mapBlocks[object.getY()][object.getX()].getView().setForeground(Color.white);
 
       if (object.getName() == GameObject.HERO)
       {
-        mapBlocks[object.getX()][object.getY()].getView().setForeground(Color.yellow);
+        mapBlocks[object.getY()][object.getX()].getView().setForeground(Color.yellow);
       }
     }
   }

@@ -22,13 +22,12 @@ import static com.sun.java.accessibility.util.AWTEventMonitor.addKeyListener;
 @Data
 public class Hero implements Obj
 {
-  private String view1 = "⊕";
-  private String view2 = "⊗";
-  private GameObject name = GameObject.HERO;
+  private String view1;
+  private String view2;
   private int x;
   private int y;
   boolean openCloseView = false;
-  Direction nextStepDirection = Direction.HOLD;
+  Direction nextStepDirection;
 
   Hero(int x, int y)
   {
@@ -47,11 +46,18 @@ public class Hero implements Obj
   public void generateNextStep(Map map, List<Obj> mapObjects)
   {
     List<Pair<Integer, Integer>> freeWays = lookForFreeSpace(map, mapObjects);
+    System.out.println(freeWays);
     if (freeWays.contains(nextStepDirection.getPoint()))
     {
       setX(x + nextStepDirection.getPoint().getKey());
       setY(y + nextStepDirection.getPoint().getValue());
     }
+  }
+
+  @Override
+  public GameObject getName()
+  {
+    return GameObject.HERO;
   }
 
   protected void setControl(JFrame frame)

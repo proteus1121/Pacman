@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  */
 public class Enemy implements Obj
 {
-  private String view = "♕";
+  private String view;
   private int x;
   private int y;
 
