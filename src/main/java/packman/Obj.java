@@ -37,7 +37,7 @@ public interface Obj
     List<Obj> mapObjectsWithoutCurrentObj = mapObjects.stream().filter(obj -> !obj.equals(this)).collect(Collectors.toList());
     return Arrays.stream(Direction.values()).filter(way ->
     {
-      Block nextBlock = map.getBlocks()[getX() + way.getPoint().getKey()][getY() + way.getPoint().getKey()];
+      Block nextBlock = map.getBlocks()[getX() + way.getPoint().getKey()][getY() + way.getPoint().getValue()];
       return !nextBlock.getStatus().isBusy(nextBlock, mapObjectsWithoutCurrentObj);
     }).map(Direction::getPoint).collect(Collectors.toList());
   }

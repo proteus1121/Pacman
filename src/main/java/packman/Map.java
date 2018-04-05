@@ -34,7 +34,7 @@ public class Map
       for (int y = 0; y < colls; y++)
       {
         Block n = new Block(map.charAt(z));
-        dip.add(n.getView(), i, y);
+        dip.add(n.getView());
         blocks[i][y] = n;
         z++;
       }
