@@ -4,14 +4,13 @@
  */
 package packman;
 
-import javafx.util.Pair;
 import lombok.Data;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javax.swing.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.List;
-import java.util.Random;
 
 import static com.sun.java.accessibility.util.AWTEventMonitor.addKeyListener;
 
