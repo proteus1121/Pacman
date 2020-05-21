@@ -27,7 +27,8 @@ class Display {
     public static final Gson GSON = new Gson();
     private Timer timer;
     private JFrame frame = new JFrame();
-    private Map map = new Map();
+    private Map map;
+    private Hero heroObj;
 
     Display() {
         frame.setTitle("Packman!");
@@ -38,14 +39,13 @@ class Display {
 
         ClassLoader classLoader = getClass().getClassLoader();
         File mapFile = new File(Objects.requireNonNull(classLoader.getResource("map_1.json")).getFile());
-//    setMap(mapFile, dip);
 
         try {
             JsonElement map = new JsonParser().parse(new FileReader(mapFile.getPath()));
             JsonObject jobject = map.getAsJsonObject();
 
             JsonObject hero = jobject.getAsJsonObject("hero");
-            Hero heroObj = GSON.fromJson(hero, Hero.class);
+            heroObj = GSON.fromJson(hero, Hero.class);
             heroObj.setControl(frame);
             mapObjects.add(heroObj);
 
@@ -57,16 +57,13 @@ class Display {
             });
 
             JsonArray mapArray = jobject.getAsJsonArray("mapArray");
-            this.map.readMap(mapArray, dip);
+            this.map = new Map(mapArray, dip);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-//    setMap(dip);
 
-//    setMapObjects(mapObjects);
-
-        timer = new javax.swing.Timer(800, e ->
+        timer = new javax.swing.Timer(200, e ->
         {
             nextStep();
             repaint(mapObjects);
@@ -80,46 +77,7 @@ class Display {
 
     private void nextStep() {
         mapObjects.forEach(obj -> obj.generateNextStep(map, mapObjects));
-
-//        if (blocks[object.getX() + x][object.getY() + y].passable && !blocks[object.getX() + x][object.getY() + y].getText().equals("♕"))
-//        {
-//          blocks[object.getX()][object.getY()].setText("");
-//          blocks[object.getX()][object.getY()].setForeground(Color.white);
-//          blocks[object.getX() + x][object.getY() + y].setText("♕");
-//
-//          object.setX(object.getX() + x);
-//          object.setY(object.getY() + y);
-//        }
-//        else
-//        {
-//          blocks[object.getX()][object.getY()].setText("");
-//          blocks[object.getX()][object.getY()].setForeground(Color.white);
-//          blocks[object.getX()][object.getY()].setText("♕");
-//
-//          object.setX(object.getX());
-//          object.setY(object.getY());
-//        }
     }
-
-//  private void setMap(JPanel dip)
-//  {
-//    this.map.readMap(map, dip);
-//  }
-
-//  private void setMapObjects(List<Obj> mapObjects)
-//  {
-//    Hero hero = new Hero(1, 1);
-//    hero.setControl(frame);
-//    mapObjects.add(hero);
-//    Obj e1 = new Enemy(7, 9);
-//    mapObjects.add(e1);
-//    Obj e2 = new Enemy(9, 10);
-//    mapObjects.add(e2);
-//    Obj e3 = new Enemy(10, 10);
-//    mapObjects.add(e3);
-//    Obj e4 = new Enemy(9, 9);
-//    mapObjects.add(e4);
-//  }
 
     public void repaint(List<Obj> objects) {
         int a = 0;
@@ -137,17 +95,27 @@ class Display {
                 }
             }
         }
-        if (a == 0) {
-            timer.stop();
-            JOptionPane.showMessageDialog(frame, "Игра пройдена!");
-        }
         for (final Obj object : objects) {
             mapBlocks[object.getY()][object.getX()].getView().setText(object.getView());
             mapBlocks[object.getY()][object.getX()].getView().setForeground(Color.white);
 
-            if (object.getName() == GameObject.HERO) {
+            if (object.getType() == GameObject.HERO) {
                 mapBlocks[object.getY()][object.getX()].getView().setForeground(Color.yellow);
+                if (mapBlocks[object.getY()][object.getX()].getStatus() == BlockInfo.POINT) {
+                    mapBlocks[object.getY()][object.getX()].setStatus(BlockInfo.EMPTY);
+                }
             }
+            else if (object.getType() == GameObject.ENEMY) {
+                if (object.getX() == heroObj.getX() &&
+                        object.getY() == heroObj.getY()) {
+                    timer.stop();
+                    JOptionPane.showMessageDialog(frame, "GAME OVER!");
+                }
+            }
+        }
+        if (a == 0) {
+            timer.stop();
+            JOptionPane.showMessageDialog(frame, "GAME COMPLETED!");
         }
     }
 }

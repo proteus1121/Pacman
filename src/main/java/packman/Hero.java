@@ -54,7 +54,7 @@ public class Hero implements Obj
   }
 
   @Override
-  public GameObject getName()
+  public GameObject getType()
   {
     return GameObject.HERO;
   }

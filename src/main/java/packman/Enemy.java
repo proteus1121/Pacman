@@ -40,7 +40,7 @@ public class Enemy implements Obj
     return view;
   }
 
-  public GameObject getName()
+  public GameObject getType()
   {
     return GameObject.ENEMY;
   }

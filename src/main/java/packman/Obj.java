@@ -23,7 +23,7 @@ public interface Obj {
 
     void setY(int y);
 
-    GameObject getName();
+    GameObject getType();
 
     String getView();
 
@@ -31,7 +31,10 @@ public interface Obj {
 
     default List<Pair<Integer, Integer>> lookForFreeSpace(Map map, List<Obj> mapObjects) {
         List<Obj> mapObjectsWithoutCurrentObj = mapObjects.stream().filter(obj -> !obj.equals(this)).collect(Collectors.toList());
-        return Arrays.stream(Direction.values()).filter(way ->
+        return Arrays.stream(Direction.values())
+                .filter(way -> getY() + way.getPoint().getValue() > -1)
+                .filter(way -> getX() + way.getPoint().getKey() > -1)
+                .filter(way ->
         {
             Block nextBlock = map.getBlocks()[getY() + way.getPoint().getValue()][getX() + way.getPoint().getKey()];
             return !nextBlock.getStatus().isBusy(nextBlock, mapObjectsWithoutCurrentObj);
